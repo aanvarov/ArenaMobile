@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {StyleSheet} from 'react-native';
 import MainRouter from './routes/index';
 
 const App = () => <MainRouter />;
