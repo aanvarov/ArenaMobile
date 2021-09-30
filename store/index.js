@@ -4,6 +4,7 @@ import logger from 'redux-logger';
 import reduxThunk from 'redux-thunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import authReducer from './Auth/reducer';
+import playstationReducer from './Playstation/reducer';
 
 // Configure persisted store with localStorage property name
 const persistConfig = {
@@ -14,6 +15,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  // playstation: playstationReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -23,6 +25,6 @@ const store = createStore(
   applyMiddleware(logger, reduxThunk),
 );
 
-const persister = persistStore(store);
+const persistor = persistStore(store);
 
-export {store as default, persister};
+export {store as default, persistor};

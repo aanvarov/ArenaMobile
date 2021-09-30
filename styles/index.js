@@ -38,11 +38,9 @@ S.Button = styled.TouchableOpacity`
   border-radius: 2px;
   background-color: ${props =>
     props.primary ? colors.main : props.bg ? props.bg : '#fff'};
-  padding: ${props =>
-    props.size === 'lg'
-      ? '15px'
-      : // eslint-disable-next-line no-shadow
-        props => (props.size === 'small' ? '5px' : '10px')};
+  padding: 20px 10px;
+  border-radius: 15px;
+  border-width: 1px;
 `;
 
 export default S;

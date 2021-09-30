@@ -1,11 +1,9 @@
-import ru from './ru.json';
 import uz from './uz.json';
 import en from './en.json';
 import store from '../store';
 
 const dictionary = {
   uz,
-  ru,
   en,
 };
 

@@ -27,3 +27,10 @@ export const baseURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:7007/'
     : 'https://api.arena.com';
+
+export const styleConfigs = {
+  page: {
+    paddingVertical: 28,
+    paddingHorizontal: 28,
+  },
+};

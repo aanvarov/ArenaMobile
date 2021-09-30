@@ -13,7 +13,7 @@ const MainRouter = () => {
         <Stack.Screen
           name="Home"
           component={DrawerRouter}
-          options={{title: 'Home', headerLeft: null}}
+          options={{title: 'Arena PlayStation', headerLeft: null}}
         />
         <Stack.Screen
           name="Loads"
