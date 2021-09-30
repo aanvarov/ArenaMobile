@@ -18,6 +18,7 @@ import t from '../../lang';
 import Axios from '../../utils/axios';
 import {signInSuccess} from '../../store/Auth/actions';
 import {colors} from '../../constants';
+import Logo from '../../assets/images/Logo';
 
 export default function SignIn() {
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ export default function SignIn() {
         </Styled.Title>
         {error ? (
           <Text style={styles.errorMsg}>
-            <AntIcon name="closecircle" color={colors.danger} size={18} />{' '}
+            <AntIcon name="closeCircle" color={colors.danger} size={18} />{' '}
             {error}
           </Text>
         ) : null}
@@ -95,6 +96,7 @@ export default function SignIn() {
           loading={loading}
           onPress={handleSignIn}
           dark
+          // eslint-disable-next-line react-native/no-inline-styles
           labelStyle={{color: '#fff'}}>
           {t('Sign in')}
         </Button>
