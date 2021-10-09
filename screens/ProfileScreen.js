@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text} from 'react-native';
 
-function ProfileScreen() {
+const ProfileScreen = props => {
+  useEffect(() => {
+    props.navigation.setOptions({
+      title: 'Profile',
+    });
+  }, []);
   return (
     <View>
       <Text>Profile</Text>
     </View>
   );
-}
+};
 
 export default ProfileScreen;

@@ -1,24 +1,42 @@
 import * as React from 'react';
 import {BottomNavigation} from 'react-native-paper';
-import LoadsScreen from '../screens/LoadsScreen';
 import HomeScreen from '../screens/HomeScreen';
-import TipsScreen from '../screens/TipsScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import BarScreen from '../screens/BarScreen';
+import PlaystationScreen from '../screens/PlaystationScreen';
+import HistoryScreen from '../screens/HistoryScreen';
+// import {colors} from '../constants';
 
 const DrawerRouter = ({navigation}) => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'home', title: 'Home', icon: 'home'},
-    {key: 'loads', title: 'Loads', icon: 'transit-connection-variant'},
-    {key: 'tips', title: 'Tips', icon: 'gift'},
-    {key: 'profile', title: 'Profile', icon: 'account'},
+    {key: 'home', title: 'Arena', icon: 'home-circle', color: '#2E6DB4'},
+    {
+      key: 'playstations',
+      title: 'Playstations',
+      icon: 'controller-classic',
+      color: '#00AC9F',
+    },
+    {key: 'bar', title: 'Bar', icon: 'food', color: '#F3C300'},
+    {key: 'history', title: 'Archive', icon: 'history', color: '#DF0024'},
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
-    home: props => <HomeScreen {...props} navigation={navigation} />,
-    loads: props => <LoadsScreen {...props} navigation={navigation} />,
-    tips: props => <TipsScreen {...props} navigation={navigation} />,
-    profile: props => <ProfileScreen {...props} navigation={navigation} />,
+    home: props => (
+      <HomeScreen {...props} navigation={navigation} title={routes[index]} />
+    ),
+    playstations: props => (
+      <PlaystationScreen
+        {...props}
+        navigation={navigation}
+        title={routes[index]}
+      />
+    ),
+    bar: props => (
+      <BarScreen {...props} navigation={navigation} title={routes[index]} />
+    ),
+    history: props => (
+      <HistoryScreen {...props} navigation={navigation} title={routes[index]} />
+    ),
   });
 
   return (

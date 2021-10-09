@@ -1,24 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {colors} from '../constants';
 import Styled from '../styles';
 import {useDispatch} from 'react-redux';
-import {setPlaystation} from '../store/Playstation/actions';
+import Axios from '../utils/axios';
 
-export default function PlaystationBoard({
-  playstation,
-  changeStatus,
-  btnTitle,
-}) {
-  console.log('boardsssss', playstation);
-  const dispatch = useDispatch();
-  dispatch(setPlaystation(playstation));
+export default function PlaystationBoard({play, changeStatus}) {
+  let status = 'busy';
+  if (play.status === 'busy') {
+    status = 'free';
+  }
   return (
     <View>
-      <Styled.Title style={styles.title}>{playstation.number}</Styled.Title>
-      <TouchableOpacity style={styles.button} onPress={changeStatus}>
+      <Styled.Title style={styles.title}>{play.number}</Styled.Title>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => changeStatus(play._id, status)}>
         <Text style={styles.buttonText}>
-          {playstation.status === 'free' ? 'Start' : 'Stop'}
+          {play.status === 'free' ? 'Start' : 'Stop'}
         </Text>
       </TouchableOpacity>
     </View>

@@ -2,7 +2,9 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import DrawerRouter from './DrawerRouter';
-import LoadsScreen from '../screens/LoadsScreen';
+import PlaystationScreen from '../screens/PlaystationScreen';
+import BarScreen from '../screens/BarScreen';
+import HistoryScreen from '../screens/HistoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,23 +15,24 @@ const MainRouter = () => {
         <Stack.Screen
           name="Home"
           component={DrawerRouter}
-          options={{title: 'Arena PlayStation', headerLeft: null}}
+          // options={{title: 'Arena PlayStation', headerLeft: null}}
         />
         <Stack.Screen
-          name="Loads"
-          component={LoadsScreen}
-          options={{title: 'All loads'}}
-        />
-        {/* <Stack.Screen
-          name="LoadDetails"
-          component={LoadDetailsScreen}
-          options={{ title: t("Load details") }}
+          name="Playstations"
+          component={PlaystationScreen}
+          // options={{title: 'All playstations'}}
         />
         <Stack.Screen
-          name="SelectDispatcherToTip"
-          component={SelectDispatcherToTip}
-          options={{ title: t("Loads list") }}
+          name="Bar"
+          component={BarScreen}
+          // options={{title: 'Bar'}}
         />
+        <Stack.Screen
+          name="History"
+          component={HistoryScreen}
+          // options={{title: 'History'}}
+        />
+        {/*
         <Stack.Screen
           name="FileUpload"
           component={FileUpload}

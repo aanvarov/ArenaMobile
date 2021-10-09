@@ -60,7 +60,7 @@ export default function SignIn() {
       <Logo style={styles.logo} height={100} />
       <View style={styles.maxWidth}>
         <Styled.Title color="#fff" style={styles.title}>
-          {t('Welcome')}
+          'Welcome'
         </Styled.Title>
         {error ? (
           <Text style={styles.errorMsg}>
@@ -79,7 +79,7 @@ export default function SignIn() {
         />
         <TextInput
           mode="outlined"
-          // label={t("Password")}
+          // label="Password"}
           placeholder="Password"
           secureTextEntry
           // right={<AntIcon name="phone" style={{ color: 'red', fontSize: 30 }} />}
@@ -98,7 +98,7 @@ export default function SignIn() {
           dark
           // eslint-disable-next-line react-native/no-inline-styles
           labelStyle={{color: '#fff'}}>
-          {t('Sign in')}
+          Sign in
         </Button>
       </View>
     </KeyboardAvoidingView>

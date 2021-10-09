@@ -20,7 +20,7 @@ axios.interceptors.response.use(
     return res;
   },
   error => {
-    console.log('AXIOS----------', error.response);
+    // console.log('AXIOS----------', error.response);
     // if (error.message === 'Network Error' || error.code === 'ECONNABORTED') {
     //   return Promise.reject(error);
     // }

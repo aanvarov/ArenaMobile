@@ -3,17 +3,17 @@ import {Text, StyleSheet} from 'react-native';
 import {colors} from '../constants';
 import Styled from '../styles';
 
-export default function BigButton({item, setPlaystation}) {
+export default function BigButton({item, setPlayId}) {
   if (item.status === 'free') {
     return (
-      <Styled.Button primary onPress={() => setPlaystation(item)}>
+      <Styled.Button primary onPress={() => setPlayId(item._id)}>
         <Text style={styles.numberTextFree}>{item.number}</Text>
         <Text style={styles.typeTextFree}>{item.type}</Text>
       </Styled.Button>
     );
   } else {
     return (
-      <Styled.Button onPress={() => setPlaystation(item)}>
+      <Styled.Button onPress={() => setPlayId(item._id)}>
         <Text style={styles.numberText}>{item.number}</Text>
         <Text style={styles.typeText}>{item.type}</Text>
       </Styled.Button>

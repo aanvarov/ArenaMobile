@@ -15,7 +15,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  // playstation: playstationReducer,
+  playstation: playstationReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
