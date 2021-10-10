@@ -14,10 +14,10 @@ const DrawerRouter = ({navigation}) => {
       key: 'playstations',
       title: 'Playstations',
       icon: 'controller-classic',
-      color: '#00AC9F',
+      color: '#77295B',
     },
-    {key: 'bar', title: 'Bar', icon: 'food', color: '#F3C300'},
-    {key: 'history', title: 'Archive', icon: 'history', color: '#DF0024'},
+    {key: 'bar', title: 'Bar', icon: 'food', color: '#14D315'},
+    {key: 'history', title: 'Archive', icon: 'history', color: '#AF181A'},
   ]);
 
   const renderScene = BottomNavigation.SceneMap({

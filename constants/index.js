@@ -1,8 +1,8 @@
 export const colors = {
   blue: '#2E6DB4',
-  green: '#00AC9F',
-  poppy: '#F3C300',
-  red: '#DF0024',
+  green: '#77295B',
+  poppy: '#14D315',
+  red: '#AF181A',
   main: '#025199',
   mainDark: '#033A6B',
   secondary: '#f2f5fc',

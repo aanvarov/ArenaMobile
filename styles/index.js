@@ -7,7 +7,7 @@ const S = {};
 
 S.Page = styled.ScrollView`
   min-height: ${Dimensions.get('screen').height - 150}px;
-  background-color: ${colors.secondary};
+  background-color: ${props => (props.bg ? props.bg : colors.secondary)};
   padding: ${paddingVertical}px ${paddingHorizontal}px;
   padding-bottom: 150px;
   width: 100%;
@@ -24,6 +24,7 @@ S.SubTitle = styled.Text`
   font-size: ${props => props.size || '24px'};
   font-weight: ${props => props.weight || 500};
   color: ${props => props.color || colors.text};
+  text-align: ${props => props.align || 'left'};
 `;
 
 S.Text = styled.Text`
@@ -34,13 +35,13 @@ S.Text = styled.Text`
 `;
 
 S.Button = styled.TouchableOpacity`
-  flex: 1;
-  border-radius: 2px;
+  border-radius: 5px;
   background-color: ${props =>
     props.primary ? colors.main : props.bg ? props.bg : '#fff'};
-  padding: 20px 10px;
-  border-radius: 15px;
-  border-width: 1px;
+  padding: ${props =>
+    props.size === 'lg'
+      ? '15px'
+      : props => (props.size === 'small' ? '5px' : '10px')};
 `;
 
 export default S;
