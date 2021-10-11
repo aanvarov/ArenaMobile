@@ -5,6 +5,7 @@ import reduxThunk from 'redux-thunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import authReducer from './Auth/reducer';
 import playstationReducer from './Playstation/reducer';
+import currentDayReducer from './Day/reducer';
 
 // Configure persisted store with localStorage property name
 const persistConfig = {
@@ -16,6 +17,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   playstation: playstationReducer,
+  day: currentDayReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

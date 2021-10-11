@@ -5,6 +5,7 @@ import DrawerRouter from './DrawerRouter';
 import PlaystationScreen from '../screens/PlaystationScreen';
 import BarScreen from '../screens/BarScreen';
 import HistoryScreen from '../screens/HistoryScreen';
+import OrderScreen from '../screens/OrderScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +14,7 @@ const MainRouter = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
+          name="Arena"
           component={DrawerRouter}
           // options={{title: 'Arena PlayStation', headerLeft: null}}
         />
@@ -31,6 +32,11 @@ const MainRouter = () => {
           name="History"
           component={HistoryScreen}
           // options={{title: 'History'}}
+        />
+        <Stack.Screen
+          name="Order"
+          component={OrderScreen}
+          // options={{title: 'Order'}}
         />
         {/*
         <Stack.Screen

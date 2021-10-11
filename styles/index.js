@@ -39,9 +39,7 @@ S.Button = styled.TouchableOpacity`
   background-color: ${props =>
     props.primary ? colors.main : props.bg ? props.bg : '#fff'};
   padding: ${props =>
-    props.size === 'lg'
-      ? '15px'
-      : props => (props.size === 'small' ? '5px' : '10px')};
+    props.size === 'lg' ? '15px' : props.size === 'small' ? '5px' : '10px'};
 `;
 
 export default S;

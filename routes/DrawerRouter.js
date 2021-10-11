@@ -4,8 +4,10 @@ import HomeScreen from '../screens/HomeScreen';
 import BarScreen from '../screens/BarScreen';
 import PlaystationScreen from '../screens/PlaystationScreen';
 import HistoryScreen from '../screens/HistoryScreen';
+import OrderScreen from '../screens/OrderScreen';
 // import {colors} from '../constants';
 
+// icons from MaterialCommunityIcons => https://oblador.github.io/react-native-vector-icons/
 const DrawerRouter = ({navigation}) => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -16,8 +18,13 @@ const DrawerRouter = ({navigation}) => {
       icon: 'controller-classic',
       color: '#77295B',
     },
-    {key: 'bar', title: 'Bar', icon: 'food', color: '#14D315'},
-    {key: 'history', title: 'Archive', icon: 'history', color: '#AF181A'},
+    {
+      key: 'order',
+      title: 'Order',
+      icon: 'sword-cross',
+      color: '#14D315',
+    },
+    {key: 'bar', title: 'Bar', icon: 'food', color: '#AF181A'},
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
@@ -27,15 +34,16 @@ const DrawerRouter = ({navigation}) => {
     playstations: props => (
       <PlaystationScreen
         {...props}
+        setIndex={setIndex}
         navigation={navigation}
         title={routes[index]}
       />
     ),
+    order: props => (
+      <OrderScreen {...props} navigation={navigation} title={routes[index]} />
+    ),
     bar: props => (
       <BarScreen {...props} navigation={navigation} title={routes[index]} />
-    ),
-    history: props => (
-      <HistoryScreen {...props} navigation={navigation} title={routes[index]} />
     ),
   });
 

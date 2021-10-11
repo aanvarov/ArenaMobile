@@ -11,6 +11,7 @@ import {setPlaystation} from '../../store/Playstation/actions';
 
 const PlaystationScreen = props => {
   const dispatch = useDispatch();
+  const currentDay = store.getState().day;
   const prevPlay = store.getState().playstation;
   const [playData, setPlayData] = useState([]);
   const [play, setPlay] = useState(prevPlay.data);
@@ -79,13 +80,36 @@ const PlaystationScreen = props => {
       // setStatusLoading(false);
     }
   };
+  const alertStartDay = () => {
+    Alert.alert(
+      'Start Day',
+      'First you have to start your working day',
+      [
+        {
+          text: 'OK',
+          onPress: () => {
+            // return props.navigation.navigate('Home', {});
+            return props.navigation.reset({
+              index: 0,
+              routes: [{name: 'Arena'}],
+            });
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
 
   if (playData.length > 0) {
+    if (Object.entries(currentDay.data).length === 0) {
+      console.log('navigation=>', props.navigation);
+      alertStartDay();
+    }
     return (
       <>
         <View style={styles.buttonsContainer}>
-          {playData.map(item => (
-            <BigButton item={item} setPlayId={setPlayId} />
+          {playData.map((item, index) => (
+            <BigButton key={index} item={item} setPlayId={setPlayId} />
           ))}
         </View>
         <PlaystationBoard play={play} changeStatus={changeStatus} />

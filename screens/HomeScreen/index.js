@@ -1,20 +1,34 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  Dimensions,
-} from 'react-native';
-import Axios from '../../utils/axios';
+import {View, StyleSheet, ImageBackground, Dimensions} from 'react-native';
 import Styled from '../../styles';
-import t from '../../lang';
+// import t from '../../lang';
+import Axios from '../../utils/axios';
 import PageWrapper from '../../components/PageWrapper';
 import {colors} from '../../constants';
-import {SvgCss} from 'react-native-svg';
-import StartDayPage from './StartDayPage';
+import {useDispatch} from 'react-redux';
+import {getDayNotClosed} from '../../store/Day/actions';
 
 const HomeScreen = props => {
+  const startDay = () => {
+    Axios.post('/day')
+      .then(({data}) => {
+        console.log('-1-2-3-4-5-', data);
+        dispatch(getDayNotClosed(data));
+      })
+      .catch(err => console.log(err));
+  };
+  const dispatch = useDispatch();
+  const findNotClosed = () => {
+    Axios.get('/day/findNotClosed')
+      .then(({data}) => {
+        console.log('-0-0-0-0-0-', data);
+        if (data.length > 0) {
+          dispatch(getDayNotClosed(data));
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
   const [date, setDate] = useState(new Date());
 
   function refreshClock() {
@@ -52,7 +66,7 @@ const HomeScreen = props => {
           <Styled.SubTitle size="34px" align="center" color={colors.white}>
             {date.toLocaleTimeString()}
           </Styled.SubTitle>
-          <Styled.Button bg={props.title.color}>
+          <Styled.Button onPress={startDay} bg={props.title.color}>
             <Styled.Text align="center" color={colors.poppy} weight="700">
               Start Day
             </Styled.Text>
