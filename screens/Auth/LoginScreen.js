@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {TextInput, Button} from 'react-native-paper';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -8,13 +7,13 @@ import {
   // SafeAreaView,
   StyleSheet,
   Text,
+  Button,
+  TextInput,
   // Linking,
 } from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
 
-import Styled from '../../styles';
-import t from '../../lang';
 import Axios from '../../utils/axios';
 import {signInSuccess} from '../../store/Auth/actions';
 import {colors} from '../../constants';
@@ -59,9 +58,9 @@ export default function SignIn() {
       style={styles.container}>
       <Logo style={styles.logo} height={100} />
       <View style={styles.maxWidth}>
-        <Styled.Title color="#fff" style={styles.title}>
-          'Welcome'
-        </Styled.Title>
+        <Text color="#fff" style={styles.title}>
+          Welcome
+        </Text>
         {error ? (
           <Text style={styles.errorMsg}>
             <AntIcon name="closeCircle" color={colors.danger} size={18} />{' '}

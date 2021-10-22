@@ -1,13 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Alert, Button, StyleSheet} from 'react-native';
-import BigButton from '../../components/BigButton';
-import PlaystationBoard from '../../components/PlaystationBoard';
-import Axios from '../../utils/axios';
-import Styled from '../../styles';
-import PageWrapper from '../../components/PageWrapper';
-import store from '../../store';
+import {
+  View,
+  Text,
+  Alert,
+  Button,
+  StyleSheet,
+  SafeAreaView,
+  ImageBackground,
+} from 'react-native';
+import BigButton from '../components/playstation/BigButton';
+import PlaystationBoard from '../components/playstation/PlaystationBoard';
+import Axios from '../utils/axios';
+import store from '../store';
 import {useDispatch} from 'react-redux';
-import {setPlaystation} from '../../store/Playstation/actions';
+import {setPlaystation} from '../store/Playstation/actions';
 
 const PlaystationScreen = props => {
   const dispatch = useDispatch();
@@ -49,9 +55,9 @@ const PlaystationScreen = props => {
     fetchAllPlaystations();
   }, []);
 
-  useEffect(() => {
-    getOnePlaystation();
-  }, [playId]);
+  // useEffect(() => {
+  //   getOnePlaystation();
+  // }, [getOnePlaystation, playId]);
 
   const changeStatus = async (id, status) => {
     try {
@@ -106,20 +112,36 @@ const PlaystationScreen = props => {
       alertStartDay();
     }
     return (
-      <>
-        <View style={styles.buttonsContainer}>
-          {playData.map((item, index) => (
-            <BigButton key={index} item={item} setPlayId={setPlayId} />
-          ))}
-        </View>
-        <PlaystationBoard play={play} changeStatus={changeStatus} />
-      </>
+      <SafeAreaView style={{flex: 1}}>
+        <ImageBackground
+          style={{flex: 1}}
+          resizeMode="cover"
+          source={{
+            uri: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2F736x%2F2b%2Fa8%2F12%2F2ba8126377a1d802121e191f5bcbda3f--phone-backgrounds-phone-wallpapers.jpg&f=1&nofb=1',
+          }}>
+          <View style={styles.buttonsContainer}>
+            {playData.map((item, index) => (
+              <BigButton key={index} item={item} setPlayId={setPlayId} />
+            ))}
+          </View>
+          <PlaystationBoard play={play} changeStatus={changeStatus} />
+        </ImageBackground>
+      </SafeAreaView>
     );
   } else {
     return (
-      <View>
-        <Text>no plays</Text>
-      </View>
+      <SafeAreaView style={{flex: 1}}>
+        <ImageBackground
+          style={{flex: 1}}
+          resizeMode="cover"
+          source={{
+            uri: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F0e%2F02%2F1d%2F0e021d26c7d0f811ec3f3679e483596b.jpg&f=1&nofb=1',
+          }}>
+          <View>
+            <Text>no plays</Text>
+          </View>
+        </ImageBackground>
+      </SafeAreaView>
     );
   }
 };

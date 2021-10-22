@@ -1,18 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {colors} from '../constants';
-import Styled from '../styles';
+import {View, Text, StyleSheet, TouchableOpacity, Picker} from 'react-native';
+import {colors} from '../../constants';
 import {useDispatch} from 'react-redux';
-import Axios from '../utils/axios';
+import Axios from '../../utils/axios';
 
 export default function PlaystationBoard({play, changeStatus}) {
   let status = 'busy';
   if (play.status === 'busy') {
     status = 'free';
   }
+  const [selectedValue, setSelectedValue] = useState(1);
   return (
     <View>
-      <Styled.Title style={styles.title}>{play.number}</Styled.Title>
+      <Text>PS number: {play.number}</Text>
+      <Text>hourly price: {play.hourlyPrice}</Text>
+      <Picker
+        mode="dropdown"
+        selectedValue={selectedValue}
+        style={{height: 50, width: 150}}
+        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
+        <Picker.Item label="1" value={1} />
+        <Picker.Item label="2" value={2} />
+      </Picker>
+      <Text>{play.status}</Text>
+      <Text>{play.totalEarning}</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => changeStatus(play._id, status)}>
