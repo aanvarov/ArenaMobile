@@ -12,25 +12,28 @@ import Header from '../components/Header';
 
 const PlaystationScreen = ({navigation}) => {
   const playstationBg = require('../assets/images/playstationBg.jpeg');
+  const [playstations, setPlaystations] = useState([]);
   const currentDay = useSelector(state => state.day);
 
   const dispatch = useDispatch();
-  const [playData, setPlayData] = useState([]);
   // const [play, setPlay] = useState(prev.data);
   const [playId, setPlayId] = useState('');
   const [loading, setLoading] = useState(true);
 
-  // console.log('prevData==', prevPlay.data, '==prevData');
+  const fetchAllPlaystations = () => {
+    setLoading(true);
+    Axios.get('/playstations')
+      .then(({data}) => {
+        setPlaystations(data);
+      })
+      .catch(err => console.log(err));
+    setLoading(false);
+  };
 
-  // const fetchAllPlaystations = () => {
-  //   setLoading(true);
-  //   Axios.get('/playstations')
-  //     .then(({data}) => {
-  //       setPlayData(data);
-  //     })
-  //     .catch(err => console.log(err));
-  //   setLoading(false);
-  // };
+  useEffect(() => {
+    fetchAllPlaystations();
+  }, []);
+
   // const fetchById = id => {
   //   if (id) {
   //     Axios.get(`/playstations/${id}`)
@@ -47,9 +50,6 @@ const PlaystationScreen = ({navigation}) => {
   // const getOnePlaystation = () => {
   //   fetchById(playId);
   // };
-  // useEffect(() => {
-  //   fetchAllPlaystations();
-  // }, []);
 
   // useEffect(() => {
   //   getOnePlaystation();
@@ -82,79 +82,64 @@ const PlaystationScreen = ({navigation}) => {
   //     // setStatusLoading(false);
   //   }
   // };
-
-  // const alertStartDay = () => {
-  //   Alert.alert(
-  //     'Start Day',
-  //     'First you have to start your working day',
-  //     [
-  //       {
-  //         text: 'OK',
-  //         onPress: () => {
-  //           // return props.navigation.navigate('Home', {});
-  //           return props.navigation.reset({
-  //             index: 0,
-  //             routes: [{name: 'Arena'}],
-  //           });
-  //         },
-  //       },
-  //     ],
-  //     {cancelable: false},
-  //   );
-  // };
+  const alertStartDay = () => {
+    Alert.alert(
+      'Start Day',
+      'First you have to start your working day',
+      [
+        {
+          text: 'OK',
+          onPress: () => {
+            return navigation.navigate('home');
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
 
   return (
     <ScreenWrapper imgSource={playstationBg}>
       <Header title="Playstation" />
+      <View style={styles.buttonsContainer}>
+        {playstations.length > 0 ? (
+          playstations.map((item, index) => (
+            <BigButton key={item.id} playstation={item} />
+          ))
+        ) : (
+          <View style={styles.noPlayView}>
+            <Text style={styles.noPlayText}>No Playstations</Text>
+          </View>
+        )}
+      </View>
       <View>
         <Text style={{color: 'white'}}>no plays</Text>
+        {/* <PlaystationBoard play={play} changeStatus={changeStatus} /> */}
       </View>
     </ScreenWrapper>
   );
-
-  //   if (playData.length > 0) {
-  //     if (Object.entries(currentDay.data).length === 0) {
-  //       console.log('navigation=>', props.navigation);
-  //       alertStartDay();
-  //     }
-  //     return (
-  //       <ScreenWrapper imgSource={playstationBg}>
-  //         <View style={styles.buttonsContainer}>
-  //           {playData.map((item, index) => (
-  //             <BigButton key={index} item={item} setPlayId={setPlayId} />
-  //           ))}
-  //           <Text style={{color: 'white'}}>asdasd</Text>
-  //         </View>
-  //         {/* <PlaystationBoard play={play} changeStatus={changeStatus} /> */}
-  //       </ScreenWrapper>
-  //     );
-  //   } else {
-  //     return (
-  //       <ScreenWrapper imgSource={playstationBg}>
-  //         <View>
-  //           <Text style={{color: 'white'}}>no plays</Text>
-  //         </View>
-  //       </ScreenWrapper>
-  //     );
-  //   }
 };
 
 const styles = StyleSheet.create({
-  header: {
-    marginTop: 15,
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 34,
-  },
   buttonsContainer: {
-    display: 'flex',
     flexDirection: 'row',
+    backgroundColor: '#12B0F899',
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    borderRadius: 14,
+  },
+  noPlayView: {
+    backgroundColor: '#000000',
+    borderRadius: 10,
+    flex: 1,
+    marginHorizontal: 2,
+    padding: 8,
+  },
+  noPlayText: {
+    color: 'lime',
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '900',
   },
 });
 

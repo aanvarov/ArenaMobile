@@ -1,43 +1,33 @@
 import React from 'react';
-import {Text, StyleSheet, Button} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-export default function BigButton({item, setPlayId}) {
-  if (item.status === 'free') {
-    return (
-      <Button primary onPress={() => setPlayId(item._id)}>
-        <Text style={styles.numberTextFree}>{item.number}</Text>
-        <Text style={styles.typeTextFree}>{item.type}</Text>
-      </Button>
-    );
-  } else {
-    return (
-      <Button onPress={() => setPlayId(item._id)}>
-        <Text style={styles.numberText}>{item.number}</Text>
-        <Text style={styles.typeText}>{item.type}</Text>
-      </Button>
-    );
-  }
+export default function BigButton({playstation}) {
+  return (
+    <TouchableOpacity style={styles.button}>
+      <Text style={styles.number}>{playstation.number}</Text>
+      <Text style={styles.type}>{playstation.type}</Text>
+    </TouchableOpacity>
+  );
 }
 
 const styles = StyleSheet.create({
-  numberText: {
+  button: {
+    backgroundColor: '#000000',
+    borderRadius: 10,
+    flex: 1,
+    marginHorizontal: 2,
+    padding: 8,
+  },
+  number: {
+    color: 'lime',
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '900',
   },
-  typeText: {
+  type: {
+    color: 'white',
     textAlign: 'center',
-    fontSize: 15,
-    fontWeight: '700',
-  },
-  numberTextFree: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: '900',
-  },
-  typeTextFree: {
-    textAlign: 'center',
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: '700',
   },
 });

@@ -1,14 +1,16 @@
 import * as types from './actionTypes';
 
 const initialState = {
-  data: {},
+  dayId: null,
+  day: {},
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case types.GET_STARTED_DAY: {
       return {
-        data: action.payload.data,
+        dayId: action.payload.dayId,
+        day: action.payload.day,
       };
     }
     case types.CLEAR_DAY: {

@@ -2,7 +2,8 @@ import * as types from './actionTypes';
 
 export const getStartedDay = (
   payload = {
-    data: {},
+    day: {},
+    dayId: '',
   },
 ) => {
   return {

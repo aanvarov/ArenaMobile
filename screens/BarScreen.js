@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  SafeAreaView,
-  ImageBackground,
-  Dimensions,
-} from 'react-native';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import Header from '../components/Header';
 import ScreenWrapper from '../components/ScreenWrapper';
 import FoodItem from '../components/bar/FoodItem';
@@ -30,7 +22,7 @@ export const foods = [
   },
 ];
 
-const BarScreen = props => {
+const BarScreen = ({navigation}) => {
   const barBg = require('../assets/images/barBg.jpg');
   const [searchQuery, setSearchQuery] = React.useState('');
 
