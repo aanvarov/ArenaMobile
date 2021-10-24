@@ -2,161 +2,175 @@ import React, {useState} from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
-  // TouchableOpacity,
   View,
-  // SafeAreaView,
   StyleSheet,
   Text,
-  Button,
+  Linking,
   TextInput,
-  // Linking,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
 } from 'react-native';
+import {Button} from 'native-base';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
 
 import Axios from '../../utils/axios';
 import {signInSuccess} from '../../store/Auth/actions';
-import {colors} from '../../constants';
-import Logo from '../../assets/images/Logo';
+import ScreenWrapper from '../../components/ScreenWrapper';
 
 export default function SignIn() {
   const dispatch = useDispatch();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState({
+  const [data, setData] = useState({
     phone: '',
     password: '',
-    type: 'admin',
   });
+
+  const handleLink = () =>
+    Linking.openURL('https://www.instagram.com/westminsterian/');
 
   const handleSignIn = () => {
     try {
       setLoading(true);
-      return Axios.post('/auth/sign-in', userData)
-        .then(async ({data}) => {
-          console.log('user data', data);
-          if (data.token && data.success) {
+      if (data.password === '' || data.phone === '') {
+        setError('Please enter phone number and password');
+        setLoading(false);
+      } else {
+        return Axios.post('/auth/sign-in', data)
+          .then(async ({data}) => {
+            // console.log('user data', data);
+            if (data.token && data.success) {
+              setLoading(false);
+              dispatch(signInSuccess(data));
+            } else {
+              setError(data.msg);
+            }
+          })
+          .catch(err => {
             setLoading(false);
-            dispatch(signInSuccess(data));
-          } else {
-            setError(data.msg);
-          }
-        })
-        .catch(err => {
-          setLoading(false);
-          setError(err?.response?.data?.msg || err?.response?.data);
-        });
+            setError(err?.response?.data?.msg || err?.response?.data);
+          });
+      }
     } catch (err) {
       setLoading(false);
-      console.log(err, 'err');
+      console.log(err, 'error=-=-=-=-=-');
     }
   };
-
+  const loginBg = require('../../assets/images/loginBg.jpg');
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <Logo style={styles.logo} height={100} />
-      <View style={styles.maxWidth}>
-        <Text color="#fff" style={styles.title}>
-          Welcome
-        </Text>
-        {error ? (
-          <Text style={styles.errorMsg}>
-            <AntIcon name="closeCircle" color={colors.danger} size={18} />{' '}
-            {error}
-          </Text>
-        ) : null}
-        <TextInput
-          mode="outlined"
-          // label={t("Phone number")}
-          style={styles.input}
-          placeholder="Login"
-          // right={<Icons name="screen-smartphone" size={20} />}
-          onChangeText={phone => setUserData(data => ({...data, phone}))}
-          selectionColor={colors.danger}
-        />
-        <TextInput
-          mode="outlined"
-          // label="Password"}
-          placeholder="Password"
-          secureTextEntry
-          // right={<AntIcon name="phone" style={{ color: 'red', fontSize: 30 }} />}
-          onChangeText={password => setUserData(data => ({...data, password}))}
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={{...styles.input, marginTop: 15}}
-          selectionColor={colors.danger}
-        />
-        <Button
-          icon="lock"
-          mode="contained"
-          style={styles.button}
-          disabled={loading}
-          loading={loading}
-          onPress={handleSignIn}
-          dark
-          // eslint-disable-next-line react-native/no-inline-styles
-          labelStyle={{color: '#fff'}}>
-          Sign in
-        </Button>
-      </View>
-    </KeyboardAvoidingView>
+    <ScreenWrapper imgSource={loginBg} fullHeight>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.wrapper}>
+            <View>
+              <Text style={styles.logoTitle}>Arena</Text>
+              <Text style={styles.title}>Playstation Club</Text>
+            </View>
+            <View>
+              {error ? (
+                <Text style={styles.errorMsg}>
+                  <AntIcon name="closecircle" color={'yellow'} size={15} />{' '}
+                  {error}
+                </Text>
+              ) : null}
+              <TextInput
+                style={styles.input}
+                placeholder="Phone Number"
+                placeholderTextColor="#33333388"
+                keyboardType="name-phone-pad"
+                onChangeText={phone => setData(data => ({...data, phone}))}
+              />
+              <TextInput
+                style={{...styles.input, marginTop: 15}}
+                placeholderTextColor="#33333388"
+                placeholder="Password"
+                secureTextEntry
+                onChangeText={password =>
+                  setData(data => ({...data, password}))
+                }
+              />
+              <Button
+                style={styles.button}
+                isLoading={loading}
+                isDisabled={loading}
+                isLoadingText="Signing In"
+                onPress={handleSignIn}>
+                Sign In
+              </Button>
+            </View>
+            <TouchableOpacity style={styles.linkButton} onPress={handleLink}>
+              <Text style={styles.linkText}>Made By Westminsterian</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  logo: {
-    // marginBottom: 100,
-    height: 100,
-    marginTop: 50,
+  container: {
+    backgroundColor: '#007AFF77',
+    borderRadius: 45,
+    flex: 1,
+  },
+  wrapper: {
+    flex: 1,
+    justifyContent: 'space-around',
+  },
+  logoTitle: {
+    color: 'white',
+    fontSize: 40,
+    textAlign: 'center',
+    fontWeight: '900',
   },
   title: {
-    fontSize: 28,
-    alignItems: 'center',
+    fontSize: 34,
+    fontWeight: '700',
+    color: 'white',
     textAlign: 'center',
+  },
+  input: {
+    width: '80%',
+    backgroundColor: '#ffffff',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#999',
+    borderRadius: 10,
+    color: 'black',
+    fontSize: 16,
   },
   errorMsg: {
     color: '#fff',
     marginBottom: 12,
-    fontSize: 16,
-  },
-  maxWidth: {},
-  container: {
-    backgroundColor: '#025199',
-    paddingVertical: 35,
-    paddingHorizontal: 25,
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-  page: {
-    backgroundColor: '#025199',
-    paddingVertical: 35,
-    paddingHorizontal: 25,
-    justifyContent: 'space-between',
-    flex: 1,
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: '700',
   },
   button: {
+    width: '80%',
     paddingVertical: 10,
     paddingHorizontal: 15,
     marginTop: 30,
-    backgroundColor: colors.orange,
+    backgroundColor: 'orange',
     maxWidth: 500,
     marginLeft: 'auto',
     marginRight: 'auto',
-    width: '100%',
-  },
-  input: {
-    maxWidth: 500,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width: '100%',
   },
   linkButton: {
     marginTop: 50,
     marginBottom: 20,
   },
   linkText: {
-    color: '#fff',
+    color: 'yellowgreen',
     textAlign: 'center',
   },
 });

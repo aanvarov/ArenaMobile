@@ -6,7 +6,10 @@ import {
   StyleSheet,
   SafeAreaView,
   ImageBackground,
+  Dimensions,
 } from 'react-native';
+import Header from '../components/Header';
+import ScreenWrapper from '../components/ScreenWrapper';
 import FoodItem from '../components/bar/FoodItem';
 
 export const foods = [
@@ -28,24 +31,19 @@ export const foods = [
 ];
 
 const BarScreen = props => {
+  const barBg = require('../assets/images/barBg.jpg');
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = query => setSearchQuery(query);
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <ImageBackground
-        style={{flex: 1}}
-        resizeMode="cover"
-        source={{
-          uri: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2F736x%2F8f%2Fba%2Fcb%2F8fbacbd464e996966eb9d4a6b7a9c21e--sultan.jpg%3Fb%3Dt&f=1&nofb=1',
-        }}>
-        <ScrollView>
-          {foods.map((food, index) => (
-            <FoodItem key={index} food={food} />
-          ))}
-        </ScrollView>
-      </ImageBackground>
-    </SafeAreaView>
+    <ScreenWrapper imgSource={barBg}>
+      <Header title="Bar" />
+      <ScrollView>
+        {foods.map((food, index) => (
+          <FoodItem key={index} food={food} />
+        ))}
+      </ScrollView>
+    </ScreenWrapper>
   );
 };
 

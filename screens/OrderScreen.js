@@ -1,21 +1,33 @@
 import React from 'react';
-import {Text, View, SafeAreaView, ImageBackground} from 'react-native';
+import {Text, View, StyleSheet, Image} from 'react-native';
+import Header from '../components/Header';
+import ScreenWrapper from '../components/ScreenWrapper';
 
-const OrderScreen = props => {
+const OrderScreen = ({navigation}) => {
+  const orderBg = require('../assets/images/orderBg.jpg');
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <ImageBackground
-        style={{flex: 1}}
-        resizeMode="cover"
-        source={{
-          uri: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2F736x%2F8f%2Fba%2Fcb%2F8fbacbd464e996966eb9d4a6b7a9c21e--sultan.jpg%3Fb%3Dt&f=1&nofb=1',
-        }}>
-        <View>
-          <Text>Orderssss</Text>
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
+    <ScreenWrapper imgSource={orderBg}>
+      <Header title="Tables" />
+      <View>
+        <Text style={{color: 'white'}}>Orderssss</Text>
+      </View>
+    </ScreenWrapper>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    marginTop: 15,
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  headerText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 34,
+  },
+});
 
 export default OrderScreen;

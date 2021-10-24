@@ -2,16 +2,21 @@ import React from 'react';
 import {
   View,
   Text,
-  SafeAreaView,
   StyleSheet,
-  ImageBackground,
+  ScrollView,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
 
 import Axios from '../utils/axios';
 import {useDispatch} from 'react-redux';
 import {getDayNotClosed} from '../store/Day/actions';
+import MyBalance from '../components/home/MyBalance';
+import ScreenWrapper from '../components/ScreenWrapper';
+import Header from '../components/Header';
 
 const HomeScreen = ({navigation}) => {
+  const homeBg = require('../assets/images/homeBg.jpeg');
   const startDay = () => {
     Axios.post('/day')
       .then(({data}) => {
@@ -32,24 +37,31 @@ const HomeScreen = ({navigation}) => {
       .catch(err => console.log(err));
   };
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <ImageBackground
-        style={{flex: 1}}
-        resizeMode="cover"
-        source={{
-          uri: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.wallpapersafari.com%2Fphone%2F640%2F1136%2F78%2F73%2Fsbk2tB.jpg&f=1&nofb=1',
-        }}>
-        <View style={styles.container}>
-          <Text>blaaaa</Text>
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
+    <ScreenWrapper imgSource={homeBg}>
+      <Header title="Home" />
+      <ScrollView>
+        <MyBalance />
+        <TouchableOpacity style={styles.startBtn}>
+          <Text style={styles.startBtnText}>Start Your Day</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </ScreenWrapper>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  startBtn: {
+    width: '100%',
+    backgroundColor: '#12B0F899',
+    alignItems: 'center',
+    borderRadius: 14,
+    marginTop: 25,
+  },
+  startBtnText: {
+    fontSize: 20,
+    fontWeight: '700',
+    paddingVertical: 18,
+    color: 'white',
   },
 });
 

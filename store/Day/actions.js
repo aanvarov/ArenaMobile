@@ -1,14 +1,20 @@
 import * as types from './actionTypes';
 
-export const clearDay = () => {
+export const getStartedDay = (
+  payload = {
+    data: {},
+  },
+) => {
   return {
-    type: types.CLEAR_DAY,
+    type: types.GET_STARTED_DAY,
+    payload,
   };
 };
 
-export const getDayNotClosed = payload => {
+export const clearDay = payload => {
+  console.log('clearDay');
   return {
-    type: types.GET_DAY_NOT_CLOSED,
+    type: types.CLEAR_DAY,
     payload,
   };
 };

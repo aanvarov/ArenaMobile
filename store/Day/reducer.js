@@ -6,10 +6,9 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.GET_DAY_NOT_CLOSED: {
+    case types.GET_STARTED_DAY: {
       return {
-        ...state,
-        data: action.payload,
+        data: action.payload.data,
       };
     }
     case types.CLEAR_DAY: {

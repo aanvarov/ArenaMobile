@@ -5,6 +5,12 @@ import {colors, styleConfigs} from '../constants';
 const {paddingHorizontal, paddingVertical} = styleConfigs.page;
 const S = {};
 
+S.ImageBackground = styled.ImageBackground`
+  height: ${Dimensions.get('screen').height - 150}px;
+  resize-mode: cover;
+  source: ${props => props.url};
+`;
+
 S.Page = styled.ScrollView`
   min-height: ${Dimensions.get('screen').height - 150}px;
   background-color: ${props => (props.bg ? props.bg : colors.secondary)};

@@ -13,7 +13,7 @@ export const signInSuccess = (
 };
 
 export const signOutSuccess = payload => {
-  console.log('hey');
+  console.log('signOutSuccess');
   return {
     type: types.SIGN_OUT_SUCCESS,
     payload,
