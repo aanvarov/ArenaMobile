@@ -1,48 +1,87 @@
 import React from 'react';
 import {
-  View,
   Text,
   StyleSheet,
   ScrollView,
-  Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import Axios from '../utils/axios';
 import {useDispatch} from 'react-redux';
-import {getDayNotClosed} from '../store/Day/actions';
+import {getStartedDay, clearDay} from '../store/Day/actions';
 import MyBalance from '../components/home/MyBalance';
 import ScreenWrapper from '../components/ScreenWrapper';
 import Header from '../components/Header';
+import {useSelector} from 'react-redux';
 
 const HomeScreen = ({navigation}) => {
   const homeBg = require('../assets/images/homeBg.jpeg');
-  const startDay = () => {
-    Axios.post('/day')
-      .then(({data}) => {
-        console.log('-1-2-3-4-5-', data);
-        dispatch(getDayNotClosed(data));
-      })
-      .catch(err => console.log(err));
-  };
   const dispatch = useDispatch();
-  const findNotClosed = () => {
-    Axios.get('/day/findNotClosed')
+  const currentDay = useSelector(state => state.day);
+  // starting new day
+  const startDay = () => {
+    Axios.post('/days')
       .then(({data}) => {
-        console.log('-0-0-0-0-0-', data);
-        if (data.length > 0) {
-          dispatch(getDayNotClosed(data));
-        }
+        dispatch(getStartedDay(data));
       })
       .catch(err => console.log(err));
   };
+  // finish current day
+  const stopDay = () => {
+    try {
+      Alert.alert(
+        'Stop Current Day',
+        'Are you sure to finish current day',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => {
+              Axios.patch(`/days/closeDay/${currentDay.dayId}`, {
+                startedAt: currentDay.day.startedAt,
+              })
+                .then(({data}) => {
+                  console.log('closedDay', data);
+                })
+                .catch(err => console.log(err));
+              console.log('cleared');
+              dispatch(clearDay());
+            },
+          },
+        ],
+        {cancelable: false},
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDay = () => {
+    if (currentDay.dayId) {
+      stopDay();
+    } else {
+      startDay();
+    }
+  };
+
   return (
     <ScreenWrapper imgSource={homeBg}>
       <Header title="Home" />
       <ScrollView>
         <MyBalance />
-        <TouchableOpacity style={styles.startBtn}>
-          <Text style={styles.startBtnText}>Start Your Day</Text>
+        <TouchableOpacity style={styles.startBtn} onPress={handleDay}>
+          <Text
+            style={[
+              styles.startBtnText,
+              currentDay.dayId ? {color: 'lime'} : null,
+            ]}>
+            {currentDay.dayId ? 'Stop Your Day' : 'Start Your Day'}
+          </Text>
         </TouchableOpacity>
       </ScrollView>
     </ScreenWrapper>
@@ -52,7 +91,7 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   startBtn: {
     width: '100%',
-    backgroundColor: '#12B0F899',
+    backgroundColor: '#12B0Ff99',
     alignItems: 'center',
     borderRadius: 14,
     marginTop: 25,

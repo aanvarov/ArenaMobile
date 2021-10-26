@@ -13,7 +13,7 @@ const ScreenWrapper = props => {
       style={
         props.fullHeight
           ? {flex: 1}
-          : {height: Dimensions.get('screen').height - 90}
+          : {height: Dimensions.get('screen').height - 100}
       }
       resizeMode="cover"
       source={props.imgSource}>

@@ -1,34 +1,60 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Picker} from 'react-native';
-import {colors} from '../../constants';
+import React, {useState, useRef, useEffect} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Animated} from 'react-native';
 import {useDispatch} from 'react-redux';
 import Axios from '../../utils/axios';
+import {Divider} from 'native-base';
 
-export default function PlaystationBoard({play, changeStatus}) {
-  let status = 'busy';
-  if (play.status === 'busy') {
-    status = 'free';
-  }
-  const [selectedValue, setSelectedValue] = useState(1);
+export default function PlaystationBoard({playstation, changeStatus}) {
+  const {isFree, _id} = playstation;
+  const [numOfPeople, setNumOfPeople] = useState(1);
   return (
-    <View>
-      <Text>PS number: {play.number}</Text>
-      <Text>hourly price: {play.hourlyPrice}</Text>
-      <Picker
-        mode="dropdown"
-        selectedValue={selectedValue}
-        style={{height: 50, width: 150}}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
-        <Picker.Item label="1" value={1} />
-        <Picker.Item label="2" value={2} />
-      </Picker>
-      <Text>{play.status}</Text>
-      <Text>{play.totalEarning}</Text>
+    <View
+      style={[
+        styles.container,
+        isFree ? null : {backgroundColor: '#99ffff55'},
+      ]}>
+      <View>
+        <Text style={styles.text}>PS number: {playstation.number}</Text>
+        <Divider thickness={1} />
+        <Text style={styles.text}>PS type: {playstation.type}</Text>
+        <Divider thickness={1} />
+        <Text style={styles.text}>Total time: {playstation.totalTime}</Text>
+        <Divider thickness={1} />
+        <Text style={styles.text}>
+          Total earning: {playstation.totalEarning} uzs
+        </Text>
+        <Divider thickness={1} />
+        <Text style={styles.text}>Status: {playstation.isFree}</Text>
+        <Divider thickness={1} />
+        <Text style={styles.text}>
+          Hourly price: {playstation.hourlyPrice} uzs
+        </Text>
+        <Divider thickness={1} />
+        <Text style={styles.text}>Number of Players</Text>
+        <View style={styles.numbersWrapper}>
+          {[1, 2, 3, 4].map((num, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.numButton,
+                num === numOfPeople ? {borderColor: 'lime'} : null,
+              ]}
+              onPress={() => setNumOfPeople(num)}>
+              <Text style={styles.numText}>{num}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <Divider thickness={1} />
+      </View>
       <TouchableOpacity
-        style={styles.button}
-        onPress={() => changeStatus(play._id, status)}>
-        <Text style={styles.buttonText}>
-          {play.status === 'free' ? 'Start' : 'Stop'}
+        style={styles.startButton}
+        disabled={false}
+        onPress={() => {
+          changeStatus(_id, !isFree);
+          console.log('btn pressed');
+        }}>
+        <Text style={[styles.startButtonText, isFree ? null : {color: 'red'}]}>
+          {isFree ? 'START' : 'STOP'}
         </Text>
       </TouchableOpacity>
     </View>
@@ -36,32 +62,60 @@ export default function PlaystationBoard({play, changeStatus}) {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 70,
+  container: {
+    flex: 1,
+    padding: 15,
+    marginVertical: 15,
+    backgroundColor: '#12B0F866',
+    borderRadius: 10,
+    justifyContent: 'space-between',
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: 'lime',
+    marginVertical: 14,
     textAlign: 'center',
+  },
+  numbersWrapper: {
+    flexDirection: 'row',
+    marginBottom: 14,
+  },
+  numButton: {
+    flex: 1,
+    backgroundColor: '#000000',
+    margin: 2,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  numText: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '800',
+    color: 'lime',
+    paddingVertical: 13,
+  },
+  button: {
+    borderRadius: 10,
+    backgroundColor: '#000000',
+    color: 'lime',
   },
   buttonText: {
     textAlign: 'center',
-    color: colors.white,
+    color: 'lime',
     fontSize: 20,
   },
-  button: {
-    backgroundColor: colors.mainDark,
-    padding: 15,
-    borderRadius: 10,
-    width: 200,
-    marginHorizontal: 90,
+  startButton: {
+    width: '100%',
+    backgroundColor: 'black',
+    borderRadius: 5,
+    paddingVertical: 15,
   },
-  numberTextFree: {
+  startButtonText: {
+    fontSize: 18,
+    color: 'lime',
     textAlign: 'center',
-    color: colors.white,
-    fontSize: 20,
-    fontWeight: '900',
-  },
-  typeTextFree: {
-    textAlign: 'center',
-    color: colors.white,
-    fontSize: 15,
     fontWeight: '700',
   },
 });
