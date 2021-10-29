@@ -3,10 +3,66 @@ import {View, Text, StyleSheet, TouchableOpacity, Animated} from 'react-native';
 import {useDispatch} from 'react-redux';
 import Axios from '../../utils/axios';
 import {Divider} from 'native-base';
+import {useSelector} from 'react-redux';
 
-export default function PlaystationBoard({playstation, changeStatus}) {
-  const {isFree, _id} = playstation;
+export default function PlaystationBoard({
+  playstation,
+  changeStatus,
+  navigation,
+}) {
+  const {
+    isFree,
+    _id: playstationId,
+    hourlyPrice,
+    number: tableNumber,
+  } = playstation;
   const [numOfPeople, setNumOfPeople] = useState(1);
+  const currentDay = useSelector(state => state.day);
+  const [order, setOrder] = useState({});
+  // } else if (numOfPeople === 3) {
+  //   setCurrentHourlyPrice(currentHourlyPrice + 4000);
+  // } else if (numOfPeople === 4) {
+  //   setCurrentHourlyPrice(currentHourlyPrice + 6000);
+  // }
+
+  const handleStartAndStop = () => {
+    if (isFree) {
+      createOrder();
+    } else {
+      closeOrder();
+    }
+  };
+
+  const createOrder = () => {
+    Axios.post('/orders', {
+      playstationId,
+      hourlyPrice,
+      numOfPeople,
+      tableNumber,
+      day: currentDay.dayId,
+    })
+      .then(({data}) => {
+        console.log(data.payload);
+        setOrder(data.payload);
+      })
+      .catch(err => console.log(err));
+    console.log('order created');
+    changeStatus(playstationId, !isFree);
+    console.log('status changed');
+    // navigation.navigate('orderScreen');
+  };
+
+  const closeOrder = () => {
+    console.log({...order});
+    Axios.patch(`/orders/${order._id}`, {
+      startedAtTime: order.startedAtTime,
+      numOfPeople,
+      hourlyPrice,
+    })
+      .then(({data}) => console.log(data))
+      .catch(err => console.log(err));
+  };
+
   return (
     <View
       style={[
@@ -27,7 +83,11 @@ export default function PlaystationBoard({playstation, changeStatus}) {
         <Text style={styles.text}>Status: {playstation.isFree}</Text>
         <Divider thickness={1} />
         <Text style={styles.text}>
-          Hourly price: {playstation.hourlyPrice} uzs
+          Hourly price:{' '}
+          {numOfPeople > 1
+            ? hourlyPrice + (numOfPeople - 1) * 2000
+            : hourlyPrice}{' '}
+          uzs
         </Text>
         <Divider thickness={1} />
         <Text style={styles.text}>Number of Players</Text>
@@ -50,7 +110,7 @@ export default function PlaystationBoard({playstation, changeStatus}) {
         style={styles.startButton}
         disabled={false}
         onPress={() => {
-          changeStatus(_id, !isFree);
+          handleStartAndStop();
           console.log('btn pressed');
         }}>
         <Text style={[styles.startButtonText, isFree ? null : {color: 'red'}]}>

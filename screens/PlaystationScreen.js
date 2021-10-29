@@ -109,6 +109,7 @@ const PlaystationScreen = ({navigation}) => {
           <PlaystationBoard
             playstation={playstation}
             changeStatus={changeStatus}
+            navigation={navigation}
           />
         </Animated.View>
       ) : (
