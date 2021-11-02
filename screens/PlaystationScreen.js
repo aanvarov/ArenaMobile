@@ -1,5 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, Alert, StyleSheet, Image, Animated} from 'react-native';
+import {
+  View,
+  Text,
+  Alert,
+  StyleSheet,
+  Image,
+  Animated,
+  ScrollView,
+} from 'react-native';
 import ScreenWrapper from '../components/ScreenWrapper';
 import BigButton from '../components/playstation/BigButton';
 import PlaystationBoard from '../components/playstation/PlaystationBoard';
@@ -40,11 +48,13 @@ const PlaystationScreen = ({navigation}) => {
     fetchAllPlaystations();
   }, []);
 
-  const changeStatus = async (_id, isFree) => {
+  const changeStatus = async (_id, isFree, price, totalTime) => {
     try {
       if (currentDay?.dayId) {
-        const {data} = await Axios.patch(`/playstations/status/${_id}`, {
+        const {data} = await Axios.patch(`/playstations/${_id}`, {
           isFree,
+          totalEarning: playstation.totalEarning + price,
+          totalTime: totalTime + playstation.totalTime,
         });
         Alert.alert(
           'Success',
@@ -88,7 +98,7 @@ const PlaystationScreen = ({navigation}) => {
   return (
     <ScreenWrapper imgSource={playstationBg}>
       <Header title="Playstations" />
-      <View style={styles.buttonsContainer}>
+      <ScrollView horizontal style={styles.buttonsContainer}>
         {playstations.length > 0 ? (
           playstations.map((item, index) => (
             <BigButton
@@ -103,7 +113,7 @@ const PlaystationScreen = ({navigation}) => {
             <Text style={styles.noPlayText}>No Playstations</Text>
           </View>
         )}
-      </View>
+      </ScrollView>
       {playstation ? (
         <Animated.View style={{opacity: fadeAnim, flex: 1}}>
           <PlaystationBoard
@@ -124,12 +134,24 @@ const PlaystationScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  noPlayText: {
+    color: 'lime',
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '900',
+  },
+  noPlayView: {
+    backgroundColor: 'black',
+    borderRadius: 10,
+    minWidth: '100%',
+    paddingVertical: 12,
+  },
   buttonsContainer: {
-    flexDirection: 'row',
     backgroundColor: '#12B0F899',
     paddingVertical: 5,
     paddingHorizontal: 5,
     borderRadius: 14,
+    maxHeight: 60,
   },
   selectPlaystation: {
     marginTop: 15,

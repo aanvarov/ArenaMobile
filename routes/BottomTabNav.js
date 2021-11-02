@@ -28,9 +28,14 @@ const screenOptions = {
   ],
 };
 
-const BottomTabNav = () => {
+const BottomTabNav = ({route}) => {
+  console.log('routeName', route?.params?.routeName);
   return (
-    <Tab.Navigator initialRouteName="Home" screenOptions={screenOptions}>
+    <Tab.Navigator
+      initialRouteName={
+        route?.params?.routeName ? route?.params?.routeName : 'home'
+      }
+      screenOptions={screenOptions}>
       <Tab.Screen
         component={HomeScreen}
         name="home"

@@ -11,7 +11,7 @@ import {
   Keyboard,
   TouchableOpacity,
 } from 'react-native';
-import {Button} from 'native-base';
+import {Button, Checkbox} from 'native-base';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
 
@@ -23,6 +23,7 @@ export default function SignIn() {
   const dispatch = useDispatch();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [checkboxValue, setCheckboxValue] = React.useState(false);
   const [data, setData] = useState({
     phone: '',
     password: '',
@@ -38,7 +39,10 @@ export default function SignIn() {
         setError('Please enter phone number and password');
         setLoading(false);
       } else {
-        return Axios.post('/auth/sign-in', data)
+        return Axios.post('/auth/sign-in', {
+          ...data,
+          role: checkboxValue ? 'club' : 'admin',
+        })
           .then(async ({data}) => {
             // console.log('user data', data);
             if (data.token && data.success) {
@@ -81,7 +85,7 @@ export default function SignIn() {
                 style={styles.input}
                 placeholder="Phone Number"
                 placeholderTextColor="#33333388"
-                keyboardType="name-phone-pad"
+                keyboardType="number-pad"
                 onChangeText={phone => setData(data => ({...data, phone}))}
               />
               <TextInput
@@ -93,6 +97,27 @@ export default function SignIn() {
                   setData(data => ({...data, password}))
                 }
               />
+              <View
+                style={{
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: 15,
+                }}>
+                <Checkbox
+                  isChecked={checkboxValue}
+                  onChange={() => setCheckboxValue(!checkboxValue)}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontWeight: '700',
+                      fontSize: 15,
+                      marginLeft: 5,
+                      marginTop: 3,
+                    }}>
+                    Club
+                  </Text>
+                </Checkbox>
+              </View>
               <Button
                 style={styles.button}
                 isLoading={loading}

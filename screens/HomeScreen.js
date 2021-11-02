@@ -14,16 +14,25 @@ import MyBalance from '../components/home/MyBalance';
 import ScreenWrapper from '../components/ScreenWrapper';
 import Header from '../components/Header';
 import {useSelector} from 'react-redux';
+import {useToast} from 'native-base';
 
 const HomeScreen = ({navigation}) => {
   const homeBg = require('../assets/images/homeBg.jpeg');
   const dispatch = useDispatch();
   const currentDay = useSelector(state => state.day);
+  const user = useSelector(state => state.auth);
+  const toast = useToast();
   // starting new day
   const startDay = () => {
-    Axios.post('/days')
+    Axios.post('/days', {
+      club: user.user.role === 'club' ? user.user._id : user.user.club,
+    })
       .then(({data}) => {
         dispatch(getStartedDay(data));
+        toast.show({
+          description: 'Day started',
+          placement: 'top',
+        });
       })
       .catch(err => console.log(err));
   };
@@ -47,6 +56,10 @@ const HomeScreen = ({navigation}) => {
               })
                 .then(({data}) => {
                   console.log('closedDay', data);
+                  toast.show({
+                    description: 'Day stopped',
+                    placement: 'top',
+                  });
                 })
                 .catch(err => console.log(err));
               console.log('cleared');

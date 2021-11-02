@@ -15,16 +15,14 @@ export default function PlaystationBoard({
     _id: playstationId,
     hourlyPrice,
     number: tableNumber,
+    type,
+    totalTime,
+    totalEarning,
   } = playstation;
   const [numOfPeople, setNumOfPeople] = useState(1);
   const currentDay = useSelector(state => state.day);
+  const user = useSelector(state => state.auth);
   const [order, setOrder] = useState({});
-  // } else if (numOfPeople === 3) {
-  //   setCurrentHourlyPrice(currentHourlyPrice + 4000);
-  // } else if (numOfPeople === 4) {
-  //   setCurrentHourlyPrice(currentHourlyPrice + 6000);
-  // }
-
   const handleStartAndStop = () => {
     if (isFree) {
       createOrder();
@@ -40,26 +38,32 @@ export default function PlaystationBoard({
       numOfPeople,
       tableNumber,
       day: currentDay.dayId,
+      club: user.user.role === 'club' ? user.user._id : user.user.club,
     })
       .then(({data}) => {
         console.log(data.payload);
         setOrder(data.payload);
+        changeStatus(playstationId, !isFree, 0, 0);
       })
       .catch(err => console.log(err));
     console.log('order created');
-    changeStatus(playstationId, !isFree);
-    console.log('status changed');
-    // navigation.navigate('orderScreen');
+    navigation.push('BottomTabNav', {routeName: 'orderScreen'});
   };
 
   const closeOrder = () => {
-    console.log({...order});
     Axios.patch(`/orders/${order._id}`, {
       startedAtTime: order.startedAtTime,
       numOfPeople,
       hourlyPrice,
     })
-      .then(({data}) => console.log(data))
+      .then(({data}) => {
+        changeStatus(
+          playstationId,
+          !isFree,
+          data.payload.price,
+          data.payload.totalTime,
+        );
+      })
       .catch(err => console.log(err));
   };
 
@@ -67,20 +71,20 @@ export default function PlaystationBoard({
     <View
       style={[
         styles.container,
-        isFree ? null : {backgroundColor: '#99ffff55'},
+        isFree ? null : {backgroundColor: '#00881199'},
       ]}>
       <View>
-        <Text style={styles.text}>PS number: {playstation.number}</Text>
+        <Text style={styles.text}>PS number: {tableNumber}</Text>
         <Divider thickness={1} />
-        <Text style={styles.text}>PS type: {playstation.type}</Text>
-        <Divider thickness={1} />
-        <Text style={styles.text}>Total time: {playstation.totalTime}</Text>
+        <Text style={styles.text}>PS type: {type}</Text>
         <Divider thickness={1} />
         <Text style={styles.text}>
-          Total earning: {playstation.totalEarning} uzs
+          Total time: {String(totalTime).slice(0, 4)} min
         </Text>
         <Divider thickness={1} />
-        <Text style={styles.text}>Status: {playstation.isFree}</Text>
+        <Text style={styles.text}>Total earning: {totalEarning} uzs</Text>
+        <Divider thickness={1} />
+        <Text style={styles.text}>Status: {isFree ? 'free' : 'busy'}</Text>
         <Divider thickness={1} />
         <Text style={styles.text}>
           Hourly price:{' '}
@@ -95,6 +99,7 @@ export default function PlaystationBoard({
           {[1, 2, 3, 4].map((num, index) => (
             <TouchableOpacity
               key={index}
+              disabled={isFree ? false : true}
               style={[
                 styles.numButton,
                 num === numOfPeople ? {borderColor: 'lime'} : null,
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     marginVertical: 15,
-    backgroundColor: '#12B0F866',
+    backgroundColor: '#12B0F890',
     borderRadius: 10,
     justifyContent: 'space-between',
   },

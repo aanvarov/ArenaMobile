@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import Header from '../components/Header';
+import AddPlaystationModal from '../components/profile/AddPlaystation';
 import ScreenWrapper from '../components/ScreenWrapper';
 
 const ProfileScreen = ({navigation}) => {
@@ -11,6 +12,7 @@ const ProfileScreen = ({navigation}) => {
       <View>
         <Text>Profile</Text>
       </View>
+      <AddPlaystationModal nav={navigation} />
     </ScreenWrapper>
   );
 };
